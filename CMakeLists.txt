@@ -18,7 +18,8 @@ add_executable(riks_hello_world_cpp ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} riks)
 target_link_libraries(${PROJECT_NAME} cryptobox)
 target_link_libraries(${PROJECT_NAME} toolbox)
-target_link_libraries(${PROJECT_NAME} cryptobox)
+target_link_libraries(${PROJECT_NAME} outbox)
+
 
 #openssl
 target_link_libraries(${PROJECT_NAME} crypto)
@@ -27,12 +28,13 @@ target_link_libraries(${PROJECT_NAME} ssl)
 
 
 # Boost.Serialization Boost.ASIO
-
-find_package(Boost 1.58.0 COMPONENTS serialization system REQUIRED)
-if (Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-endif ()
+target_link_libraries(${PROJECT_NAME} boost_serialization)
+target_link_libraries(${PROJECT_NAME} boost_system)
+#find_package(Boost 1.58.0 COMPONENTS serialization system REQUIRED)
+#if (Boost_FOUND)
+#    include_directories(${Boost_INCLUDE_DIRS})
+#    target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+#endif ()
 
 # Crypto++
 
