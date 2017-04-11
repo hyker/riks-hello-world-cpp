@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 11)
 # Riks Hello World!
 
 set(SOURCE_FILES main.cpp)
-link_directories(deps/bin)
+link_directories(.)
 include_directories(${CMAKE_SOURCE_DIR}/deps/include)
 add_executable(riks_hello_world_cpp ${SOURCE_FILES})
 
