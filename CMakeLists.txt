@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 11)
 # Riks Hello World!
 
 set(SOURCE_FILES main.cpp)
-link_directories(.)
+link_directories(deps)
 include_directories(${CMAKE_SOURCE_DIR}/deps/include)
 add_executable(riks_hello_world_cpp ${SOURCE_FILES})
 
@@ -38,8 +38,8 @@ target_link_libraries(${PROJECT_NAME} boost_system)
 
 # Crypto++
 
-find_package(Crypto++)
-if (CRYPTO++_FOUND)
-    include_directories(${CRYPTO++_INCLUDE_DIR})
-    target_link_libraries(${PROJECT_NAME} ${CRYPTO++_LIBRARIES})
-endif ()
+#find_package(Crypto++)
+#if (CRYPTO++_FOUND)
+#    include_directories(${CRYPTO++_INCLUDE_DIR})
+#    target_link_libraries(${PROJECT_NAME} ${CRYPTO++_LIBRARIES})
+#endif ()
