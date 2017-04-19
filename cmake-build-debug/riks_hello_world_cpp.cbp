@@ -5,7 +5,7 @@
 		<Option title="riks_hello_world_cpp"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\cmake\;CMake Files\cmake\modules\;"/>
+		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/home/joakimb/Workspaces/hyker/riks-hello-world-cpp/cmake-build-debug"/>
@@ -45,12 +45,10 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/home/joakimb/Workspaces/hyker/riks-hello-world-cpp/deps/include"/>
-					<Add directory="/usr/include/cryptopp"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/backward"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include"/>
-					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
@@ -69,12 +67,10 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/home/joakimb/Workspaces/hyker/riks-hello-world-cpp/deps/include"/>
-					<Add directory="/usr/include/cryptopp"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/backward"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include"/>
-					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
@@ -91,9 +87,6 @@
 		</Unit>
 		<Unit filename="/home/joakimb/Workspaces/hyker/riks-hello-world-cpp/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
-		</Unit>
-		<Unit filename="/home/joakimb/Workspaces/hyker/riks-hello-world-cpp/cmake/modules/FindCrypto++.cmake">
-			<Option virtualFolder="CMake Files\cmake\modules\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>
