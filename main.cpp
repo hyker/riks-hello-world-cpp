@@ -1,15 +1,15 @@
 // RIKS++
-#include "apptimate/riks/riks_whitelist.hpp"
-#include "apptimate/riks/rikskit.hpp"
-#include "apptimate/riks/message/message.hpp"
+#include "hyker/riks/riks_whitelist.hpp"
+#include "hyker/riks/rikskit.hpp"
+#include "hyker/riks/message/message.hpp"
 
 // Cryptobox++
-#include "apptimate/cryptobox/cryptobox.hpp"
-#include "apptimate/security/security_util.hpp"
+#include "hyker/cryptobox/cryptobox.hpp"
+#include "hyker/security/security_util.hpp"
 
 // Toolbox++
-#include "apptimate/values.hpp"
-#include "apptimate/json.hpp"
+#include "hyker/values.hpp"
+#include "hyker/json.hpp"
 
 // std
 #include <iostream>
@@ -21,49 +21,49 @@
 
 class Pinger {
 public:
-    Pinger(apptimate::riks::RiksKit&& riks1, apptimate::riks::RiksKit&& riks2) :
+    Pinger(hyker::riks::RiksKit&& riks1, hyker::riks::RiksKit&& riks2) :
             m_riks1 (std::move(riks1)),
             m_riks2 (std::move(riks2)) {
         std::cout << m_riks1.getUID() << " - " << m_riks2.getUID() << std::endl;
     }
 
-    void ping(const apptimate::riks::Message& message) {
+    void ping(const hyker::riks::Message& message) {
         std::cout << "Encrypting " << std::to_string(++s) << std::endl;
         m_riks1.encryptMessage(message, "namespace", [&](const std::string& encrypted) {
             std::cout << "Decrypting " << std::to_string(++s) << std::endl;
             m_riks2.decryptMessage(encrypted,
-                                   [&](const apptimate::riks::Message& decrypted) {
+                                   [&](const hyker::riks::Message& decrypted) {
                                        ping(decrypted);
                                    },
-                                   [](apptimate::Exception& e) {
+                                   [](hyker::Exception& e) {
                                        std::cout << "Error: " << e.what() << std::endl;
                                    });
         });
     }
 
     int s = 0;
-    apptimate::riks::RiksKit m_riks1;
-    apptimate::riks::RiksKit m_riks2;
+    hyker::riks::RiksKit m_riks1;
+    hyker::riks::RiksKit m_riks2;
 };
 
-apptimate::cryptobox::Cryptobox initCryptobox() {
-    return apptimate::cryptobox::Cryptobox('#' + apptimate::cryptobox::SecurityUtil::generateString(10), "asdqwe");
+hyker::cryptobox::Cryptobox initCryptobox() {
+    return hyker::cryptobox::Cryptobox('#' + hyker::cryptobox::SecurityUtil::generateString(10), "asdqwe");
 }
 
-apptimate::riks::RiksWhitelist initRiksWhitelist() {
-    return apptimate::riks::RiksWhitelist(
+hyker::riks::RiksWhitelist initRiksWhitelist() {
+    return hyker::riks::RiksWhitelist(
             [](const std::string& uid, const std::string& messageNamespace, const std::string& keyID) -> bool {
                 return true;
             }
     );
 }
 
-apptimate::riks::RiksKit initRiksKit(const std::string& file) {
+hyker::riks::RiksKit initRiksKit(const std::string& file) {
     auto rikskit = [&](){
         try {
-            return apptimate::riks::RiksKit::load(file, "asdqwe", initRiksWhitelist());
+            return hyker::riks::RiksKit::load(file, "asdqwe", initRiksWhitelist());
         } catch (...) {
-            return apptimate::riks::RiksKit(initCryptobox(), initRiksWhitelist());
+            return hyker::riks::RiksKit(initCryptobox(), initRiksWhitelist());
         }
     }();
     sleep(1);
@@ -79,7 +79,7 @@ int main() {
 
     sleep(1);
 
-    pinger.ping(apptimate::riks::Message("this is secret", "this is immutable", "this is mutable"));
+    pinger.ping(hyker::riks::Message("this is secret", "this is immutable", "this is mutable"));
 
     sleep(10);
 
