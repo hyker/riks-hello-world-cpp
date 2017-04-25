@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 project(riks_hello_world_cpp)
 
+set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(MACOSX_RPATH OFF)
 

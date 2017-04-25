@@ -38,7 +38,19 @@ namespace hyker {
         static void log(int level, int context, std::string line);
 
     private:
+        static std::mutex mutex;
+
         static int logLevel;
         static int whiteListMask;
+
+        static bool colorCodes;
+        static bool cleared;
+
+        static std::string def;
+        static std::string red;
+        static std::string orange;
+        static std::string green;
+        static std::string magenta;
+        static std::string cls;
     };
 }

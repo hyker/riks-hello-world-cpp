@@ -118,7 +118,7 @@ namespace hyker {
              *
              * @return The DER encoded string.
              */
-            static std::string fromPEMtoDER(const std::string & pem);
+            static std::string fromPEMtoDER(const std::string& pem);
 
             /**
              *
@@ -126,7 +126,7 @@ namespace hyker {
              *
              * @return
              */
-            static std::string pack(const long & num);
+            static std::string pack(long num);
 
             /**
              *
@@ -134,7 +134,7 @@ namespace hyker {
              *
              * @return
              */
-            static long unpack(const std::string & str);
+            static long unpack(const std::string& str);
 
             /**
              * Retrieves the packet length of the data.
@@ -297,7 +297,7 @@ namespace hyker {
              *
              * @return <b>true</b> if valid port.
              */
-            static bool isPort(const int & port);
+            static bool isPort(int port);
         };
     }
 }
