@@ -21,40 +21,30 @@
 
 class Pinger {
 public:
-    hyker::riks::RiksKit m_riks1;
-    hyker::riks::RiksKit m_riks2;
-    int s = 0;
-    
-    Pinger(const std::string& riks1, const std::string& riks2) :
-            m_riks1 (initRiksKit(riks1)),
-            m_riks2 (initRiksKit(riks2)) {
-        std::cout << m_riks1.getUID() << " - " << m_riks2.getUID() << std::endl;
-    }
-
-    void ping(const hyker::riks::Message& message) {
-        std::cout << "Encrypting " << std::to_string(++s) << std::endl;
+    Pinger(std::string file_1, std::string file_2) :
+        m_file_1    (file_1),
+        m_file_2    (file_2),
+        m_rikskit_1 (initRiksKit(file_1)),
+        m_rikskit_2 (initRiksKit(file_2)) {
         
-        m_riks1.encryptMessage(message, "namespace", [&](const std::string& encrypted) {
-            std::cout << "Decrypting " << std::to_string(++s) << std::endl;
-            m_riks2.decryptMessage(encrypted,
-                                   [&](const hyker::riks::Message& decrypted) {
-                                       ping(decrypted);
-                                   },
-                                   [](hyker::Exception& e) {
-                                       std::cout << "Error: " << e.what() << std::endl;
-                                   });
-        });
+        std::cout << m_rikskit_1.getUID() << " - " << m_rikskit_2.getUID() << std::endl;
+        
+        sleep(1);
+        
+        ping(hyker::riks::Message("this is secret", "this is immutable", "this is mutable"));
     }
 
-    hyker::cryptobox::Cryptobox initCryptobox() {
-        return hyker::cryptobox::Cryptobox('#' + hyker::cryptobox::SecurityUtil::generateString(10), "asdqwe");
+    ~Pinger() {
+        m_rikskit_1.save(m_file_1, "asdqwe");
+        m_rikskit_2.save(m_file_2, "asdqwe");
     }
 
-    hyker::riks::RiksWhitelist initRiksWhitelist() {
-        return hyker::riks::RiksWhitelist([](const std::string& uid, const std::string& messageNamespace, const std::string& keyID) -> bool {
-            return true;
-        });
-    }
+private:
+    std::string m_file_1;
+    std::string m_file_2;
+    
+    hyker::riks::RiksKit m_rikskit_1;
+    hyker::riks::RiksKit m_rikskit_2;
 
     hyker::riks::RiksKit initRiksKit(const std::string& file) {
         auto rikskit = [&]() {
@@ -70,24 +60,38 @@ public:
         return rikskit;
     }
 
+    hyker::cryptobox::Cryptobox initCryptobox() {
+        return hyker::cryptobox::Cryptobox('#' + hyker::cryptobox::SecurityUtil::generateString(10), "asdqwe");
+    }
+
+    hyker::riks::RiksWhitelist initRiksWhitelist() {
+        return hyker::riks::RiksWhitelist([](const std::string& uid, const std::string& message_namespace, const std::string& key_id) -> bool {
+            return true;
+        });
+    }
+
+    void ping(const hyker::riks::Message& message) {
+        static int index = 0;
+        
+        std::cout << "Encrypting " << std::to_string(++index) << std::endl;
+        
+        m_rikskit_1.encryptMessage(message, "namespace", [&](const std::string& encrypted) {
+            std::cout << "Decrypting " << std::to_string(++index) << std::endl;
+            
+            m_rikskit_2.decryptMessage(encrypted,
+                                   [&](const hyker::riks::Message& decrypted) {
+                                       ping(decrypted);
+                                   },
+                                   [](hyker::Exception& e) {
+                                       std::cout << "Error: " << e.what() << std::endl;
+                                   });
+        });
+    }
+
 };
 
 int main() {
-
-    auto file1 = "riks1a.cache";
-    auto file2 = "riks1b.cache";
-
-    Pinger pinger(file1, file2);
-
-    sleep(1);
-
-    pinger.ping(hyker::riks::Message("this is secret", "this is immutable", "this is mutable"));
-
-    sleep(10);
-
-    pinger.m_riks1.save(file1, "asdqwe");
-    pinger.m_riks2.save(file2, "asdqwe");
-
+    Pinger pinger("riks1a.cache", "riks1b.cache");
     sleep(1000);
     return 0;
 }
