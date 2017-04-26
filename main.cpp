@@ -31,14 +31,19 @@ public:
         std::cout << m_riks1.getUID() << " - " << m_riks2.getUID() << std::endl;
     }
 
-    void ping(const hyker::riks::Message& message) {
+
+
+    void ping(const std::string& secret, const std::string& immutable, const std::string& mutable_s) {
+        
+	hyker::riks::Message h_msg = hyker::riks::Message(secret, immutable, mutable_s);
+
         std::cout << "Encrypting " << std::to_string(++s) << std::endl;
         
-        m_riks1.encryptMessage(message, "namespace", [&](const std::string& encrypted) {
+        m_riks1.encryptMessage(h_msg, "namespace", [&](const std::string& encrypted) {
             std::cout << "Decrypting " << std::to_string(++s) << std::endl;
             m_riks2.decryptMessage(encrypted,
                                    [&](const hyker::riks::Message& decrypted) {
-                                       ping(decrypted);
+                                       ping(decrypted.getSecret(), decrypted.getImmutable(), decrypted.getMutable());
                                    },
                                    [](hyker::Exception& e) {
                                        std::cout << "Error: " << e.what() << std::endl;
@@ -81,7 +86,7 @@ int main() {
 
     sleep(1);
 
-    pinger.ping(hyker::riks::Message("this is secret", "this is immutable", "this is mutable"));
+    pinger.ping("this is secret", "this is immutable", "this is mutable");
 
     sleep(10);
 
