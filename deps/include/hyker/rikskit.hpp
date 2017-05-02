@@ -7,7 +7,7 @@
 // Core (Toolbox++)
 #include "hyker/exception.hpp"
 
-// std
+// stdx
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -22,9 +22,6 @@ namespace hyker {
             using EncryptionCallback = std::function<void(const std::string&)>;
             using DecryptionCallback = std::function<void(const Message&)>;
             using ExceptionCallback = std::function<void(const hyker::Exception&)>;
-
-            using SignFunction = std::function<std::string(const std::string&)>;
-            using VerifyFunction = std::function<bool(const std::string&, const std::string&, const std::string&)>;
 
             RiksKit(const std::string& uid, const std::string& password, const Whitelist& whitelist, const std::string& property_store = DEFAULT_CONFIGURATION);
             ~RiksKit();

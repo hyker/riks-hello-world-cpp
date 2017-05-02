@@ -47,12 +47,12 @@ namespace hyker {
         static bool color_codes;
         static bool cleared;
 
-        static std::string def;
-        static std::string red;
-        static std::string orange;
-        static std::string green;
-        static std::string magenta;
-        static std::string cls;
+	constexpr static const char* def     = "\033[0m";
+	constexpr static const char* red     = "\033[1;31m";
+	constexpr static const char* orange  = "\033[33m";
+	constexpr static const char* green   = "\033[32m";
+	constexpr static const char* magenta = "\033[35m";
+	constexpr static const char* cls     = "\033[2J\033[1;1H";
     };
 
 }
