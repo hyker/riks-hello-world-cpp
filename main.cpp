@@ -12,7 +12,7 @@ int main() {
     Log::setLogConditions(LOG_LEVEL_VERBOSE, LOG_CONTEXT_ALL);
     
     // Then, let's generate a UID for you.
-    std::string uid = "#hyker" + util::random::generateString(10);
+    std::string uid = "#hyker" + (std::string)util::random::generateString(10);
     
     // Then, give your password.
     std::string password = "guest";
@@ -47,7 +47,7 @@ int main() {
     // But what about decrypting it? Let's start another RIKS kit.
     
     // Generate another UID.
-    std::string uid_2 = "#gamer-" + util::random::generateString(10);
+    std::string uid_2 = "#gamer-" + (std::string)util::random::generateString(10);
     
     // Give the password
     std::string password_2 = "hunter2";
@@ -75,10 +75,14 @@ int main() {
     // NOW! Let's try decrypting the message.
     auto decrypted_message = rikskit_2.decryptMessage(encrypted_message);
     
-    // Extract its precious secrets.
-    std::cout << "Secret data:    " << decrypted_message.secretData() << std::endl;
-    std::cout << "Immutable data: " << decrypted_message.immutableData() << std::endl;
-    std::cout << "Mutable data:   " << decrypted_message.mutableData() << std::endl;
+    // Extract its precious secrets
+    std::string secret_data    = decrypted_message.secret_data;
+    std::string immutable_data = decrypted_message.immutable_data;
+    std::string mutable_data   = decrypted_message.mutable_data;
+    
+    std::cout << "Secret data:    " << secret_data    << std::endl;
+    std::cout << "Immutable data: " << immutable_data << std::endl;
+    std::cout << "Mutable data:   " << mutable_data   << std::endl;
     
     // Now you know the basics. Here are some exercises for you:
     // 
