@@ -23,7 +23,7 @@ if defined VCInstallDir (
     md build
     cd build
 
-	call python ..\download.py vs2015 x64
+	call python ..\download.py vs2015 x64 .
 
 	call cl^
 	    /Iinclude^
