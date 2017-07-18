@@ -23,22 +23,22 @@ if defined VCInstallDir (
     md build
     cd build
 
-	call python ..\download.py vs2015 x64 .
+    call python ..\download.py vs2015 x64 .
 
-	call cl^
-	    /Iinclude^
-	    ..\main.cpp^
-	    riks.lib^
-	    toolbox.lib^
-	    /MD
+    call cl^
+        /Iinclude^
+        ..\main.cpp^
+        riks.lib^
+        toolbox.lib^
+        /MD
 
-	copy ..\res\default.config .
-	copy ..\res\truststore.p12 .
+    copy ..\res\default.config .
+    copy ..\res\truststore.p12 .
 
-	echo.
-	echo Build complete. Running hello world...
-	echo.
-	call main.exe
+    echo.
+    echo Build complete. Running hello world...
+    echo.
+    call main.exe
 ) else (
     echo You must run this script from a Visual Studio Command Prompt.
 )
