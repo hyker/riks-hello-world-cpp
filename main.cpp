@@ -1,24 +1,26 @@
 #include "hyker/rikskit.hpp"
+
 #include "hyker/util/random.hpp"
 #include "hyker/log.hpp"
 
 #include <iostream>
 #include <string>
 
-using namespace hyker;
-
 int main() {
+    using namespace hyker;
+    using namespace hyker::riks;
+
     // Tell RIKS to be verbose and log everything.
-    Log::setLogConditions(LOG_LEVEL_VERBOSE, LOG_CONTEXT_ALL);
+    Log::instance().setLogConditions(LOG_LEVEL_VERBOSE, LOG_CONTEXT_ALL);
     
     // Then, let's generate a UID for you.
-    std::string uid = "#hyker" + (std::string)util::random::generateString(10);
+    auto uid = "#hyker-" + (std::string)util::random::generateString(10);
     
     // Then, give your password.
-    std::string password = "guest";
+    auto password = "guest"; // No way.
     
     // Then, define your whitelist.
-    riks::Whitelist whitelist(
+    Whitelist whitelist(
         [](std::string uid, std::string message_namespace, std::string key_id) -> bool {
             // We are very naïve, we trust everyone.
             return true;
@@ -29,16 +31,16 @@ int main() {
     );
     
     // Then, define your configurations file. (Optional)
-    std::string config = "default.config";
+    auto config = "default.config";
     
     // Finally, create a RIKS kit.
-    riks::RiksKit rikskit(uid, password, whitelist, config);
+    RiksKit rikskit(uid.c_str(), password, whitelist, config);
     
     // Now, we are ready to begin encrypting! Create a message.
-    riks::Message message("some secret data", "some immutable plaintext", "some mutable plaintext");
+    Message message("some secret data", "some immutable plaintext", "some mutable plaintext");
 
     // Define the namespace of the message.
-    std::string message_namespace = "Earth";
+    auto message_namespace = "Earth";
     
     // Encrypt your message:
     auto encrypted_message = rikskit.encryptMessage(message, message_namespace);
@@ -47,13 +49,13 @@ int main() {
     // But what about decrypting it? Let's start another RIKS kit.
     
     // Generate another UID.
-    std::string uid_2 = "#gamer-" + (std::string)util::random::generateString(10);
+    auto uid_2 = "#gamer-" + (std::string)util::random::generateString(10);
     
     // Give the password
-    std::string password_2 = "hunter2";
+    auto password_2 = "hunter2";
     
     // Define another whitelist.
-    riks::Whitelist whitelist_2(
+    Whitelist whitelist_2(
         [](std::string uid, std::string message_namespace, std::string key_id) -> bool {
             // Don't let any Martians read your messages.
             if (message_namespace != "Earth") return false;
@@ -70,7 +72,7 @@ int main() {
     );
 
     // Create your second RIKS kit. (Use default config.)
-    riks::RiksKit rikskit_2(uid_2, password_2, whitelist);
+    RiksKit rikskit_2(uid_2.c_str(), password_2, whitelist);
     
     // NOW! Let's try decrypting the message.
     auto decrypted_message = rikskit_2.decryptMessage(encrypted_message);
