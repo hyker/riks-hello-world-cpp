@@ -7,6 +7,7 @@
 #include <string>
 
 int main() {
+    try {
     using namespace hyker;
     using namespace hyker::riks;
 
@@ -101,4 +102,7 @@ int main() {
     // - Trigger a rekey event. You can do this by doing the following call:
     //       std::string message_namespace = "Earth";
     //       rikskit2.rekey(message_namespace);
+    } catch (hyker::Exception& e) {
+        std::cout << e.what() << '\n';
+    }
 }
