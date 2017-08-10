@@ -28,7 +28,7 @@ int main() {
                 // We are very naïve, we trust everyone.
                 return true;
             },
-            [](std::string key_id) {
+            [](std::string message_namespace, std::string key_id) {
                 // Here we are notified each time we have a new key.
             }
         );
@@ -47,7 +47,7 @@ int main() {
         
         // Encrypt your message:
         auto encrypted_message = rikskit.encryptMessage(message, message_namespace);
-        
+
         // DONE! You are ready to do whatever you wish with this data, nothing more needs to be done.
         // But what about decrypting it? Let's start another RIKS kit.
         
@@ -69,7 +69,7 @@ int main() {
                 // They are good. Give them access to the key.
                 return true;
             },
-            [](std::string key_id) {
+            [](std::string message_namespace, std::string key_id) {
                 // Here we are notified each time we have a new key.
             }
         );
