@@ -32,7 +32,7 @@ int main() {
                 // Here we are notified each time we have a new key.
             }
         );
-        
+
         // Then, define your configurations file. (Optional)
         auto config = "default.config";
         
@@ -107,4 +107,5 @@ int main() {
     } catch (hyker::Exception& e) {
         std::cout << e.what() << '\n';
     }
+
 }

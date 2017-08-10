@@ -10,7 +10,6 @@ call cl^
     ..\main.cpp^
     ..\..\riks-cpp\build\lib\riks.lib^
     /W4 /O1 /EHsc^
-    /MACHINE:AMD64^
     /std:c++latest
 
 copy ..\res\default.config
