@@ -24,7 +24,7 @@ int main() {
         
         // Then, define your whitelist.
         Whitelist whitelist(
-            [](std::string uid, std::string message_namespace, std::string key_id) -> bool {
+            [](std::string uid, std::string message_namespace, std::string key_id) {
                 // We are very naïve, we trust everyone.
                 return true;
             },
