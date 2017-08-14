@@ -13,9 +13,6 @@ int main() {
         using namespace hyker;
         using namespace hyker::riks;
 
-        // Tell RIKS to be verbose and log everything.
-        //Log::setLogConditions(LOG_LEVEL_VERBOSE, LOG_CONTEXT_ALL);
-        
         // Then, let's generate a UID for you.
         auto uid = "#hyker-" + (std::string)util::random::generateString(10);
         
@@ -23,15 +20,20 @@ int main() {
         auto password = "guest"; // No way.
         
         // Then, define your whitelist.
-        Whitelist whitelist(
-            [](std::string uid, std::string message_namespace, std::string key_id) -> bool {
-                // We are very naïve, we trust everyone.
-                return true;
-            },
-            [](std::string message_namespace, std::string key_id) {
-                // Here we are notified each time we have a new key.
-            }
-        );
+        Whitelist whitelist = [](std::string uid, std::string message_namespace, std::string key_id) -> Future<bool> {
+            Future<bool> access_granted;
+            std::thread{[access_granted]() {
+                std::cout << "Granting access in ";
+                for (int i = 5; i > 0; --i) {
+                    std::cout << std::to_string(i) << "...";
+                    std::this_thread::sleep_for(std::chrono::seconds{1});
+                }
+                std::cout << "\n\n";
+                access_granted = true;
+            }}.detach();
+            // We are very naïve, we trust everyone.
+            return access_granted;
+        };
 
         // Then, define your configurations file. (Optional)
         auto config = "default.config";
@@ -58,21 +60,16 @@ int main() {
         auto password_2 = "hunter2";
         
         // Define another whitelist.
-        Whitelist whitelist_2(
-            [](std::string uid, std::string message_namespace, std::string key_id) -> bool {
-                // Don't let any Martians read your messages.
-                if (message_namespace != "Earth") return false;
-                
-                // Only allow users with an ID starting with #hyker:
-                if (uid.find("#hyker") != 0) return false;
-                
-                // They are good. Give them access to the key.
-                return true;
-            },
-            [](std::string message_namespace, std::string key_id) {
-                // Here we are notified each time we have a new key.
-            }
-        );
+        Whitelist whitelist_2 = [](std::string uid, std::string message_namespace, std::string key_id) -> bool {
+            // Don't let any Martians read your messages.
+            if (message_namespace != "Earth") return false;
+            
+            // Only allow users with an ID starting with #hyker:
+            if (uid.find("#hyker") != 0) return false;
+            
+            // They are good. Give them access to the key.
+            return true;
+        };
 
         // Create your second RIKS kit. (Use default config.)
         RiksKit rikskit_2(uid_2.c_str(), password_2, whitelist);
