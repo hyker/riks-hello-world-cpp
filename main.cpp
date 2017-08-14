@@ -78,7 +78,7 @@ int main() {
         RiksKit rikskit_2(uid_2.c_str(), password_2, whitelist);
         
         // NOW! Let's try decrypting the message.
-        auto decrypted_message = rikskit_2.decryptMessage(encrypted_message);
+        Message decrypted_message = rikskit_2.decryptMessage(encrypted_message);
         
         // Extract its precious secrets
         std::string secret_data    = decrypted_message.secret_data;
