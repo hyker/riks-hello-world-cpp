@@ -14,7 +14,7 @@ int main() {
         using namespace hyker::riks;
 
         // Then, let's generate a UID for you.
-        auto uid = "#hyker-" + (std::string)util::random::generateString(10);
+        auto uid = "#hyker-23434t5" + (std::string)util::random::generateString(10);
         
         // Then, give your password.
         auto password = "guest"; // No way.
@@ -22,14 +22,14 @@ int main() {
         // Then, define your whitelist.
         Whitelist whitelist = [](std::string uid, std::string message_namespace, std::string key_id) -> Future<bool> {
             Future<bool> access_granted;
-            std::thread{[access_granted]() {
+            std::thread{[access_granted]() mutable {
                 std::cout << "Granting access in ";
                 for (int i = 5; i > 0; --i) {
                     std::cout << std::to_string(i) << "...";
                     std::this_thread::sleep_for(std::chrono::seconds{1});
                 }
                 std::cout << "\n\n";
-                access_granted = true;
+                access_granted = false;
             }}.detach();
             // We are very naïve, we trust everyone.
             return access_granted;
@@ -54,7 +54,7 @@ int main() {
         // But what about decrypting it? Let's start another RIKS kit.
         
         // Generate another UID.
-        auto uid_2 = "#gamer-" + (std::string)util::random::generateString(10);
+        auto uid_2 = "#gamer-1453453b45" + (std::string)util::random::generateString(10);
         
         // Give the password
         auto password_2 = "hunter2";
@@ -102,7 +102,7 @@ int main() {
         //       std::string message_namespace = "Earth";
         //       rikskit2.rekey(message_namespace);
     } catch (hyker::Exception& e) {
-        std::cout << e.what() << '\n';
+        std::cout << "Error: " << e.what() << '\n';
     }
 
 }
