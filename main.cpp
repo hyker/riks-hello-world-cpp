@@ -18,7 +18,7 @@ int main() {
         
         // Then, give your password.
         auto password = "guest"; // No way.
-        
+
         // Then, define your whitelist.
         Whitelist whitelist{[](std::string uid, std::string message_namespace, std::string key_id) -> Future<bool> {
             Future<bool> access_granted;
