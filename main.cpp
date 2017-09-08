@@ -24,7 +24,7 @@ int main() {
         using namespace hyker;
         using namespace hyker::riks;
 
-        Log::setLogConditions(Log::LEVEL_VERBOSE);
+        //Log::setLogConditions(Log::LEVEL_VERBOSE);
         
         // Then, let's generate a UID for you.
         const auto uid = "#hyker-23434t5" + randomString(10);
