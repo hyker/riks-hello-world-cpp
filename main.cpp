@@ -24,13 +24,13 @@ int main() {
         using namespace hyker;
         using namespace hyker::riks;
 
-        Log::setLogConditions(LOG_LEVEL_VERBOSE, LOG_CONTEXT_ALL);
+        Log::setLogConditions(Log::LEVEL_VERBOSE);
         
         // Then, let's generate a UID for you.
-        auto uid = "#hyker-23434t5" + randomString(10);
+        const auto uid = "#hyker-23434t5" + randomString(10);
         
         // Then, give your password.
-        auto password = "guest"; // No way.
+        const auto password = "guest"; // No way.
 
         // Then, define your whitelist.
         Whitelist whitelist{[](std::string uid, std::string message_namespace, std::string key_id) -> Future<bool> {
@@ -51,27 +51,27 @@ int main() {
         }};
 
         // Then, define your configurations file. (Optional)
-        auto config = "default.config";
+        const auto config = "default.config";
         
         // Finally, create a RIKS kit.
         RiksKit rikskit_1(uid.c_str(), password, whitelist, config);
         
         // Now, we are ready to begin encrypting! Create a message.
-        Message message("some secret data", "some immutable plaintext", "some mutable plaintext");
+        const Message message("some secret data", "some immutable plaintext", "some mutable plaintext");
 
         // Define the namespace of the message.
-        auto message_namespace = "Earth";
+        const auto message_namespace = "Earth";
         
         // Encrypt your message:
-        auto encrypted_message = rikskit_1.encryptMessage(message, message_namespace);
+        const auto encrypted_message = rikskit_1.encryptMessage(message, message_namespace);
 
         // DONE! You are ready to do whatever you wish with this data, nothing more needs to be done.
         // But what about decrypting it? Let's start another RIKS kit.
         // Generate another UID.
-        auto uid_2 = "#gamer-1453453b45" + randomString(10);
+        const auto uid_2 = "#gamer-1453453b45" + randomString(10);
         
         // Give the password
-        auto password_2 = "hunter2";
+        const auto password_2 = "hunter2";
         
         // Define another whitelist.
         Whitelist whitelist_2{[](std::string uid, std::string message_namespace, std::string key_id) -> bool {
@@ -89,24 +89,24 @@ int main() {
         RiksKit rikskit_2(uid_2.c_str(), password_2, whitelist_2);
         
         // NOW! Let's try decrypting the message.
-        Message decrypted_message = rikskit_2.decryptMessage(encrypted_message);
+        const Message decrypted_message = rikskit_2.decryptMessage(encrypted_message);
         
         // Extract its precious secrets
-        std::string secret_data    = decrypted_message.secret_data;
-        std::string immutable_data = decrypted_message.immutable_data;
-        std::string mutable_data   = decrypted_message.mutable_data;
+        const std::string secret_data    = decrypted_message.secret_data;
+        const std::string immutable_data = decrypted_message.immutable_data;
+        const std::string mutable_data   = decrypted_message.mutable_data;
         
         std::cout << "Secret data:    " << secret_data    << std::endl;
         std::cout << "Immutable data: " << immutable_data << std::endl;
         std::cout << "Mutable data:   " << mutable_data   << std::endl;
 
     	while (true) {
-                auto encrypted_message = rikskit_1.encryptMessage({"secret data", "immutable data", "mutable data"}, "namespace");
-                auto decrypted_message = rikskit_2.decryptMessage(encrypted_message).get();
+                const auto encrypted_message = rikskit_1.encryptMessage({"secret data", "immutable data", "mutable data"}, "namespace");
+                const auto decrypted_message = rikskit_2.decryptMessage(encrypted_message).get();
 
-                std::string secret_data    = decrypted_message.secret_data;
-                std::string immutable_data = decrypted_message.immutable_data;
-                std::string mutable_data   = decrypted_message.mutable_data;
+                const std::string secret_data    = decrypted_message.secret_data;
+                const std::string immutable_data = decrypted_message.immutable_data;
+                const std::string mutable_data   = decrypted_message.mutable_data;
 
                 std::cout << "Secret data:    " << secret_data    << std::endl;
                 std::cout << "Immutable data: " << immutable_data << std::endl;
