@@ -23,6 +23,8 @@ int main() {
     try {
         using namespace hyker;
         using namespace hyker::riks;
+
+        Log::setLogConditions(LOG_LEVEL_VERBOSE, LOG_CONTEXT_ALL);
         
         // Then, let's generate a UID for you.
         auto uid = "#hyker-23434t5" + randomString(10);
@@ -34,12 +36,12 @@ int main() {
         Whitelist whitelist{[](std::string uid, std::string message_namespace, std::string key_id) -> Future<bool> {
             Future<bool> access_granted;
             std::thread{[access_granted]() mutable {
-//                std::cout << "Granting access in ";
-//                for (int i = 5; i > 0; --i) {
-//                    std::cout << std::to_string(i) << "...";
-//                    std::this_thread::sleep_for(std::chrono::seconds{1});
-//                }
-//                std::cout << "\n\n";
+                // std::cout << "Granting access in ";
+                // for (int i = 5; i > 0; --i) {
+                //     std::cout << std::to_string(i) << "...";
+                //     std::this_thread::sleep_for(std::chrono::seconds{1});
+                // }
+                // std::cout << "\n\n";
                 
                 // We are very naïve, we trust everyone.
                 access_granted = true;
@@ -52,7 +54,7 @@ int main() {
         auto config = "default.config";
         
         // Finally, create a RIKS kit.
-        RiksKit rikskit(uid.c_str(), password, whitelist, config);
+        RiksKit rikskit_1(uid.c_str(), password, whitelist, config);
         
         // Now, we are ready to begin encrypting! Create a message.
         Message message("some secret data", "some immutable plaintext", "some mutable plaintext");
@@ -61,7 +63,7 @@ int main() {
         auto message_namespace = "Earth";
         
         // Encrypt your message:
-        auto encrypted_message = rikskit.encryptMessage(message, message_namespace);
+        auto encrypted_message = rikskit_1.encryptMessage(message, message_namespace);
 
         // DONE! You are ready to do whatever you wish with this data, nothing more needs to be done.
         // But what about decrypting it? Let's start another RIKS kit.
@@ -99,7 +101,7 @@ int main() {
         std::cout << "Mutable data:   " << mutable_data   << std::endl;
 
     	while (true) {
-                auto encrypted_message = rikskit.encryptMessage({"secret data", "immutable data", "mutable data"}, "namespace");
+                auto encrypted_message = rikskit_1.encryptMessage({"secret data", "immutable data", "mutable data"}, "namespace");
                 auto decrypted_message = rikskit_2.decryptMessage(encrypted_message).get();
 
                 std::string secret_data    = decrypted_message.secret_data;

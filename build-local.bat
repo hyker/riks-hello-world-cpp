@@ -6,7 +6,7 @@ md build
 cd build
 
 call cl^
-    -I..\..\riks-cpp\include^
+    -I..\..\riks-cpp\build\include^
     ..\main.cpp^
     ..\..\riks-cpp\build\lib\riks.lib^
     /W4 /O1 /EHsc^
