@@ -13,7 +13,7 @@ call cl^
     /std:c++latest
 
 copy ..\res\default.config
-copy ..\res\truststore.p12
+copy ..\res\root_certificate.pem
 
 copy ..\..\riks-cpp\build\bin\riks.dll
 

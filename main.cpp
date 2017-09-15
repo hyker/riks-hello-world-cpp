@@ -27,7 +27,7 @@ int main() {
         //Log::setLogConditions(Log::LEVEL_VERBOSE);
         
         // Then, let's generate a UID for you.
-        const auto uid = "#hyker-23434t5" + randomString(10);
+        const auto uid = "#hyker-23434t57a9a" + randomString(10);
         
         // Then, give your password.
         const auto password = "guest"; // No way.
@@ -54,21 +54,21 @@ int main() {
         const auto config = "default.config";
         
         // Finally, create a RIKS kit.
-        RiksKit rikskit_1(uid.c_str(), password, whitelist, config);
+        RiksKit rikskit_1(uid, password, whitelist, config);
         
         // Now, we are ready to begin encrypting! Create a message.
         const Message message("some secret data", "some immutable plaintext", "some mutable plaintext");
 
         // Define the namespace of the message.
-        const auto message_namespace = "Earth";
-        
+        const auto message_namespace = "Earth 3";
+
         // Encrypt your message:
         const auto encrypted_message = rikskit_1.encryptMessage(message, message_namespace);
 
         // DONE! You are ready to do whatever you wish with this data, nothing more needs to be done.
         // But what about decrypting it? Let's start another RIKS kit.
         // Generate another UID.
-        const auto uid_2 = "#gamer-1453453b45" + randomString(10);
+        const auto uid_2 = "#gamer-1453453abdc4578" + randomString(10);
         
         // Give the password
         const auto password_2 = "hunter2";
@@ -76,7 +76,7 @@ int main() {
         // Define another whitelist.
         Whitelist whitelist_2{[](std::string uid, std::string message_namespace, std::string key_id) -> bool {
             // Don't let any Martians read your messages.
-            if (message_namespace != "Earth") return false;
+            if (message_namespace != "Earth 3") return false;
             
             // Only allow users with an ID starting with #hyker:
             if (uid.find("#hyker") != 0) return false;
@@ -86,7 +86,7 @@ int main() {
         }};
 
         // Create your second RIKS kit. (Use default config.)
-        RiksKit rikskit_2(uid_2.c_str(), password_2, whitelist_2);
+        RiksKit rikskit_2(uid_2, password_2, whitelist_2);
         
         // NOW! Let's try decrypting the message.
         const Message decrypted_message = rikskit_2.decryptMessage(encrypted_message);
