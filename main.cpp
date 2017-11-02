@@ -20,6 +20,11 @@ std::string randomString(size_t length, const char* character_set = "abcdefghijk
 }
 
 int main() {
+    const auto uid = "Mr. ☃ " + randomString(10);
+    const auto uid_2 = "Beagle boy " + randomString(10);
+    //const auto uid = "#alice-0004";
+    //const auto uid_2 = "#bob-0004";
+
     try {
         using namespace hyker;
         using namespace hyker::riks;
@@ -27,10 +32,9 @@ int main() {
         //Log::setLogConditions(Log::LEVEL_VERBOSE);
         
         // Then, let's generate a UID for you.
-        const auto uid = "#hyker-23434t57a9a" + randomString(10);
         
         // Then, give your password.
-        const auto password = "guest"; // No way.
+        const auto password = "asdqwe"; // No way.
 
         // Then, define your whitelist.
         Whitelist whitelist{[](std::string uid, std::string message_namespace, std::string key_id) -> Future<bool> {
@@ -55,7 +59,7 @@ int main() {
         
         // Finally, create a RIKS kit.
         RiksKit rikskit_1(uid, password, whitelist, config);
-        
+
         // Now, we are ready to begin encrypting! Create a message.
         const Message message("some secret data", "some immutable plaintext", "some mutable plaintext");
 
@@ -68,10 +72,9 @@ int main() {
         // DONE! You are ready to do whatever you wish with this data, nothing more needs to be done.
         // But what about decrypting it? Let's start another RIKS kit.
         // Generate another UID.
-        const auto uid_2 = "#gamer-1453453abdc4578" + randomString(10);
         
         // Give the password
-        const auto password_2 = "hunter2";
+        const auto password_2 = "asdqwe";
         
         // Define another whitelist.
         Whitelist whitelist_2{[](std::string uid, std::string message_namespace, std::string key_id) -> bool {
@@ -85,33 +88,56 @@ int main() {
             return true;
         }};
 
-        // Create your second RIKS kit. (Use default config.)
-        RiksKit rikskit_2(uid_2, password_2, whitelist_2);
+        // Create your second RIKS kit. (Use custom config.)
+        RiksKit rikskit_2(uid_2, password_2, whitelist_2, {
+            {"storage_path",                 "../test_data"},
+            {"msg_host",                     "dev.msg.hykr.io"},
+            {"msg_port",                     1443},
+            {"msg_api_key",                  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"},
+            {"kds_host",                     "alpha.kds.hykr.io"},
+            {"kds_port",                     8443},
+            {"kds_cache_expiration",         -1},
+            {"kds_api_key",                  "UNTRUSTED_API_KEY"},
+            {"kds_root_certificate",         "root_certificate.pem"},
+            {"replay_protector_window_size", 1000},
+            {"key_relay_enabled",            false}
+        });
         
         // NOW! Let's try decrypting the message.
         const Message decrypted_message = rikskit_2.decryptMessage(encrypted_message);
-        
-        // Extract its precious secrets
-        const std::string secret_data    = decrypted_message.secret_data;
-        const std::string immutable_data = decrypted_message.immutable_data;
-        const std::string mutable_data   = decrypted_message.mutable_data;
-        
-        std::cout << "Secret data:    " << secret_data    << std::endl;
-        std::cout << "Immutable data: " << immutable_data << std::endl;
-        std::cout << "Mutable data:   " << mutable_data   << std::endl;
+        for (int i = 0; true; ++i) {
+            struct SecretData {
+                int a;
+                double b;
+                bool c;
+            };
 
-    	while (true) {
-                const auto encrypted_message = rikskit_1.encryptMessage({"secret data", "immutable data", "mutable data"}, "namespace");
-                const auto decrypted_message = rikskit_2.decryptMessage(encrypted_message).get();
+            SecretData secret_data_struct;
+            secret_data_struct.a = 13;
+            secret_data_struct.b = 546.123;
+            secret_data_struct.c = true;
+		
+            if (i % (1 * 128) == 0) {
+	    	rikskit_1.rekey("namespace2");
+            }
 
-                const std::string secret_data    = decrypted_message.secret_data;
-                const std::string immutable_data = decrypted_message.immutable_data;
-                const std::string mutable_data   = decrypted_message.mutable_data;
+            const auto encrypted_message = rikskit_1.encryptMessage({{&secret_data_struct, sizeof(SecretData)}, "immutable data", "mutable data"}, "namespace2");
+            const auto decrypted_message = rikskit_2.decryptMessage(encrypted_message).get();
 
-                std::cout << "Secret data:    " << secret_data    << std::endl;
-                std::cout << "Immutable data: " << immutable_data << std::endl;
-                std::cout << "Mutable data:   " << mutable_data   << std::endl;
-    	}
+            const auto secret_data           = *reinterpret_cast<const SecretData*>(decrypted_message.secret_data.begin());
+            const std::string immutable_data = decrypted_message.immutable_data;
+            const std::string mutable_data   = decrypted_message.mutable_data;
+
+            //std::cout << '\n';
+            //std::cout << "Secret data.a   " << secret_data.a  << '\n';
+            //std::cout << "Secret data.b:  " << secret_data.b  << '\n';
+            //std::cout << "Secret data.c:  " << secret_data.c  << '\n';
+            //std::cout << "Immutable data: " << immutable_data << '\n';
+            //std::cout << "Mutable data:   " << mutable_data   << '\n';
+            std::cout << encrypted_message.get().c_str() << '\n';
+
+            //std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        }
         
         // Now you know the basics. Here are some exercises for you:
         // 
