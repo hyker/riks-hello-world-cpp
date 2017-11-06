@@ -67,7 +67,7 @@ int main() {
         const auto message_namespace = "Earth 3";
 
         // Encrypt your message:
-        const auto encrypted_message = rikskit_1.encryptMessage(message, message_namespace);
+        const auto encrypted_message = rikskit_1.encrypt(message, message_namespace);
 
         // DONE! You are ready to do whatever you wish with this data, nothing more needs to be done.
         // But what about decrypting it? Let's start another RIKS kit.
@@ -104,7 +104,7 @@ int main() {
         });
         
         // NOW! Let's try decrypting the message.
-        const Message decrypted_message = rikskit_2.decryptMessage(encrypted_message);
+        const Message decrypted_message = rikskit_2.decrypt(encrypted_message);
         for (int i = 0; true; ++i) {
             struct SecretData {
                 int a;
@@ -121,8 +121,8 @@ int main() {
 	    	rikskit_1.rekey("namespace2");
             }
 
-            const auto encrypted_message = rikskit_1.encryptMessage({{&secret_data_struct, sizeof(SecretData)}, "immutable data", "mutable data"}, "namespace2");
-            const auto decrypted_message = rikskit_2.decryptMessage(encrypted_message).get();
+            const auto encrypted_message = rikskit_1.encrypt({{&secret_data_struct, sizeof(SecretData)}, "immutable data", "mutable data"}, "namespace2");
+            const auto decrypted_message = rikskit_2.decrypt(encrypted_message).get();
 
             const auto secret_data           = *reinterpret_cast<const SecretData*>(decrypted_message.secret_data.begin());
             const std::string immutable_data = decrypted_message.immutable_data;
