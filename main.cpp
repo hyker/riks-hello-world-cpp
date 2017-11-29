@@ -89,7 +89,7 @@ int main() {
         }};
 
         // Create your second RIKS kit. (Use custom config.)
-        RiksKit rikskit_2(uid_2, password_2, whitelist_2, {
+        RiksKit rikskit_2(uid_2, password_2, whitelist_2);/*, {
             {"storage_path",                 "../test_data"},
             {"msg_host",                     "dev.msg.hykr.io"},
             {"msg_port",                     1443},
@@ -101,7 +101,7 @@ int main() {
             {"kds_root_certificate",         "root_certificate.pem"},
             {"replay_protector_window_size", 1000},
             {"key_relay_enabled",            false}
-        });
+        });*/
         
         // NOW! Let's try decrypting the message.
         const Message decrypted_message = rikskit_2.decrypt(encrypted_message);
