@@ -1,33 +1,20 @@
 #include "hyker/rikskit.hpp"
 #include "hyker/log.hpp"
+#include "hyker/util/random.hpp"
 
-#include <chrono>
-#include <cstdlib>
 #include <iostream>
 #include <string>
-#include <string.h>
 #include <thread>
 
-std::string randomString(size_t length, const char* character_set = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
-    std::srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-    auto character_set_length = strlen(character_set);
-    std::string text;
-    text.reserve(character_set_length);
-    for (size_t i = 0; i < length; ++i) {
-        text += character_set[std::rand() % character_set_length];
-    }
-    return text;
-}
-
 int main() {
-    const auto uid = "Mr. ☃ " + randomString(10);
-    const auto uid_2 = "Beagle boy " + randomString(10);
-    //const auto uid = "#alice-0004";
-    //const auto uid_2 = "#bob-0004";
-
     try {
         using namespace hyker;
         using namespace hyker::riks;
+
+        const auto uid = "Mr. ☃ " + util::random_string(10);
+        const auto uid_2 = "Beagle boy " + util::random_string(10);
+        //const auto uid = "#alice-0004";
+        //const auto uid_2 = "#bob-0004";
 
         //Log::setLogConditions(Log::LEVEL_VERBOSE);
         
@@ -105,7 +92,7 @@ int main() {
         
         // NOW! Let's try decrypting the message.
         const Message decrypted_message = rikskit_2.decrypt(encrypted_message);
-        for (int i = 0; true; ++i) {
+        for (int i = 0; i < 1; ++i) {
             struct SecretData {
                 int a;
                 double b;
