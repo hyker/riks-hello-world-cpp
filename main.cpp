@@ -1,6 +1,5 @@
 #include "hyker/rikskit.hpp"
 #include "hyker/log.hpp"
-#include "hyker/util/random.hpp"
 
 #include <iostream>
 #include <string>
@@ -11,10 +10,8 @@ int main() {
         using namespace hyker;
         using namespace hyker::riks;
 
-        const auto uid = "Mr. ☃ " + util::random_string(10);
-        const auto uid_2 = "Beagle boy " + util::random_string(10);
-        //const auto uid = "#alice-0004";
-        //const auto uid_2 = "#bob-0004";
+        const auto uid = "#alice-00004";
+        const auto uid_2 = "#bob-00004";
 
         //Log::setLogConditions(Log::LEVEL_VERBOSE);
         
