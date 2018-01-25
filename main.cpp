@@ -76,23 +76,23 @@ int main() {
         }};
 
         // Create your second RIKS kit. (Use custom config.)
-        RiksKit rikskit_2(uid_2, password_2, whitelist_2);/*, {
+        RiksKit rikskit_2(uid_2, password_2, whitelist_2, {
             {"storage_path",                 "../test_data"},
             {"msg_host",                     "dev.msg.hykr.io"},
             {"msg_port",                     1443},
             {"msg_api_key",                  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"},
-            {"kds_host",                     "alpha.kds.hykr.io"},
-            {"kds_port",                     8443},
+            {"kds_host",                     "dev.kds.hykr.io"},
+            {"kds_port",                     443},
             {"kds_cache_expiration",         -1},
             {"kds_api_key",                  "UNTRUSTED_API_KEY"},
-            {"kds_root_certificate",         "root_certificate.pem"},
+            {"kds_root_certificate",         "-----BEGIN CERTIFICATE-----\r\nMIIBoDCCAUWgAwIBAgIJALJOHjjAY42bMAoGCCqGSM49BAMCMCwxKjAoBgNVBAMM\r\nIUhZS0VSX0RFVkVMT1BNRU5UX0NBX0RPX05PVF9UUlVTVDAeFw0xNzEwMDQxNDQw\r\nNTJaFw0yNzEwMDIxNDQwNTJaMCwxKjAoBgNVBAMMIUhZS0VSX0RFVkVMT1BNRU5U\r\nX0NBX0RPX05PVF9UUlVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABG0jjTQs\r\nFCnTYOpRik3qIOuZkGvet9Z+3mzVhhhMdJ4Oc+v5+8dR8qqSskyq4YytO+H7dySq\r\nLxU4pG4L2rzqmUCjUDBOMB0GA1UdDgQWBBSpUu5tEEvb5NxolVI5jauQljSb8jAf\r\nBgNVHSMEGDAWgBSpUu5tEEvb5NxolVI5jauQljSb8jAMBgNVHRMEBTADAQH/MAoG\r\nCCqGSM49BAMCA0kAMEYCIQCNpMt38MCafJcbo1OPzhI9AAavCpUHJbDHW9+YLbvz\r\nwQIhAI0ZRPhOsGsNMWm0pDq91c7yx4jUcpsHZTjR80iof1EQ\r\n-----END CERTIFICATE-----"},
             {"replay_protector_window_size", 1000},
             {"key_relay_enabled",            false}
-        });*/
+        });
         
         // NOW! Let's try decrypting the message.
         const Message decrypted_message = rikskit_2.decrypt(encrypted_message);
-        for (int i = 0; i < 1; ++i) {
+        for (int i = 0; true; ++i) {
             struct SecretData {
                 int a;
                 double b;
@@ -104,12 +104,13 @@ int main() {
             secret_data_struct.b = 546.123;
             secret_data_struct.c = true;
 		
-            if (i % (1 * 128) == 0) {
-	    	rikskit_1.rekey("namespace2");
-            }
+            //if (i % (1 * 128) == 0) {
+	    	  rikskit_1.rekey("namespace2");
+            //}
 
             const auto encrypted_message = rikskit_1.encrypt({{&secret_data_struct, sizeof(SecretData)}, "immutable data", "mutable data"}, "namespace2");
-            const auto decrypted_message = rikskit_2.decrypt(encrypted_message).get();
+            rikskit_1.preshareKeyspace(uid_2, "namespace2");
+	    const auto decrypted_message = rikskit_2.decrypt(encrypted_message).get();
 
             const auto secret_data           = *reinterpret_cast<const SecretData*>(decrypted_message.secret_data.begin());
             const std::string immutable_data = decrypted_message.immutable_data;
