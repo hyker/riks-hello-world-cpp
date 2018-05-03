@@ -10,7 +10,7 @@ int main() {
     try {
         const hyker::DelegateClient delegate_client{
             "key-delegate",
-            1234,
+            2443,
             "72019E5042C24C90D23091ED74272360",
             false,
             "UNTRUSTED_API_KEY"
@@ -21,7 +21,7 @@ int main() {
 
         { // Preregister
         const auto session = delegate_client.open();
-        //const auto result = session.preregister(token, token_space);
+        const auto result = session.preregister(token, token_space);
         }
 
         { // Collect
