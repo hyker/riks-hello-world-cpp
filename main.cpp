@@ -17,16 +17,16 @@ int main() {
         };
 
         const auto token = "199005157756";
+        const auto token_space = "konfident-hykersec";
 
         { // Preregister
         const auto session = delegate_client.open();
-        const auto result = session.preregister(token);
-        std::cout << result.dump(4) << '\n';
+        //const auto result = session.preregister(token, token_space);
         }
 
         { // Collect
         const auto session = delegate_client.open();
-        const auto result = session.collect(token);
+        const auto result = session.collect(token, token_space);
         std::cout << result.dump(4) << '\n';
         }
 
